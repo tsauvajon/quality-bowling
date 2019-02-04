@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Boule : MonoBehaviour
 {
-    // Structure interne pour stocker plus proprement une position (position + rotation)
+    // Structure interne pour stocker plus proprement une position
+    // (position + rotation)
     private struct SauvegardePos {
         public Vector3 pos;
         public Quaternion rot;
@@ -13,8 +15,13 @@ public class Boule : MonoBehaviour
     // Etape en cours du déroulement du jeu
     private enum GameStep
     {
+        // Départ
         Start = 0,
+        
+        // мяч катится = est-ce que la boule roule (en Russe)
         мячкатится它很漂亮不是吗 = 2,
+
+        // La boule est arrêté ou est sortie de la piste
         Done = 3
     }
 
@@ -31,10 +38,6 @@ public class Boule : MonoBehaviour
     // Position initiale des quilles
     private List<SauvegardePos> initialPositionQuilles = new List<SauvegardePos>();
     private GameObject[] quilles;
-
-    // Est-ce que la boule est déjà lancée ?
-    // мяч катится = est-ce que la boule roule (en Russe)
-    // private bool мячкатится它很漂亮不是吗 = false;
 
     private GameStep step = GameStep.Start;
 
@@ -70,7 +73,7 @@ public class Boule : MonoBehaviour
                     Lancer();
                 }
 
-                // Appui sur > et < : décaler la boule sur la droite ou la gauche
+                // Appui sur > et < : décaler la boule sur la droite / la gauche
                 if (Input.GetKey(KeyCode.RightArrow)) {
                     Translater(true);
                 }
@@ -97,8 +100,11 @@ public class Boule : MonoBehaviour
 
             case GameStep.мячкатится它很漂亮不是吗:
                 var v = GetComponent<Rigidbody>().velocity;
-                // Quand le lancer est terminé (la boule est tombée ou ne bouge presque plus)
-                if (transform.position.y < -15 || (v.x < .1f && v.y < .1f && v.z < .1f)) {
+                // Quand le lancer est terminé
+                // (la boule est tombée ou ne bouge presque plus)
+                if (transform.position.y < -15 ||
+                    (v.x < .1f && v.y < .1f && v.z < .1f))
+                {
                     step = GameStep.Done;
                 }
                 break;
@@ -119,18 +125,23 @@ public class Boule : MonoBehaviour
         }
     }
 
-    // Lance la boule vers l'avant : dans le cas où un angle a été donné à la boule,
-    // on veut également ajouter une force sur l'axe Z
+    // Lance la boule vers l'avant : dans le cas où un angle a été donné à la
+    // boule, on veut également ajouter une force sur l'axe Z
     void Lancer() {
         var fw = mainCam.transform.forward;
 
         // on réactive la gravité sur la boule une fois qu'elle est lancée
         GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().AddForce(new Vector3(fw.x * 20000f , 800f, fw.z * 20000f));
+        GetComponent<Rigidbody>().AddForce(new Vector3(
+            fw.x * 20000f,
+            800f,
+            fw.z * 20000f
+        ));
         step = GameStep.мячкатится它很漂亮不是吗;
     }
 
-    // Décale à la fois la boule et la caméra sur l'axe x (sur la largeur de la piste)
+    // Décale à la fois la boule et la caméra sur l'axe x
+    // (sur la largeur de la piste)
     void Translater(bool droite) {
         // boule
         transform.position = new Vector3(
@@ -162,7 +173,11 @@ public class Boule : MonoBehaviour
 
     // Donne à la boule une vitesse angulaire pour lui donner de l'effet
     void Effet(bool droite) {
-        GetComponent<Rigidbody>().AddTorque(0, GetComponent<Rigidbody>().angularVelocity.y + (droite ? 5 : -5), 0);
+        GetComponent<Rigidbody>().AddTorque(
+            0,
+            GetComponent<Rigidbody>().angularVelocity.y + (droite ? 5 : -5),
+            0
+        );
     }
 
     // Met le jeu en place pour un lancer
@@ -174,7 +189,8 @@ public class Boule : MonoBehaviour
         ResetCameras();
     }
 
-    // Remet chacune des quilles dans leur position initiale (position, rotation, vitesse, vitesse angulaire)
+    // Remet chacune des quilles dans leur position initiale
+    // (position, rotation, vitesse, vitesse angulaire)
     void ResetQuilles() {
         for (int i = 0; i < quilles.Length; i++) {
             var body = quilles[i].GetComponent<Rigidbody>();
@@ -208,10 +224,5 @@ public class Boule : MonoBehaviour
             -3.5f
         );
         mainCam.transform.LookAt(transform.position);
-    }
-
-    bool LaQuilleEstElleDebout() {
-        // TODO
-        return true;
     }
 }
