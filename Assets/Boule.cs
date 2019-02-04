@@ -10,6 +10,14 @@ public class Boule : MonoBehaviour
         public Quaternion rot;
     }
 
+    private enum GameStep
+    {
+        Start = 0,
+        DirectionChosen = 1,
+        мячкатится它很漂亮不是吗 = 2,
+        Done = 3
+    }
+
     // Caméra principale, qui suit la boule
     public GameObject mainCam;
     // Caméra centrée sur les quilles, pour montrer l'impact
@@ -26,7 +34,9 @@ public class Boule : MonoBehaviour
 
     // Est-ce que la boule est déjà lancée ?
     // мяч катится = est-ce que la boule roule (en Russe)
-    private bool мячкатится它很漂亮不是吗 = false;
+    // private bool мячкатится它很漂亮不是吗 = false;
+
+    private GameStep step = GameStep.Start;
 
     void Start()
     {
@@ -52,52 +62,65 @@ public class Boule : MonoBehaviour
     void Update()
     {
         // Si la boule n'est pas encore lancée
-        if (!мячкатится它很漂亮不是吗) {
-            // Appui sur Espace
-            if (Input.GetKey(KeyCode.Space)) {
-                Lancer();
-            }
-            
-            // Appui sur > et < : décaler la boule sur la droite ou la gauche
-            if (Input.GetKey(KeyCode.RightArrow)) {
-                Translater(true);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow)) {
-                Translater(false);
-            }
+        switch (step)
+        {
+            case GameStep.Start:            
+                // Appui sur > et < : décaler la boule sur la droite ou la gauche
+                if (Input.GetKey(KeyCode.RightArrow)) {
+                    Translater(true);
+                }
+                if (Input.GetKey(KeyCode.LeftArrow)) {
+                    Translater(false);
+                }
 
-            // Appui sur page up / page down : donner de l'effet à la boule
-            if (Input.GetKey(KeyCode.PageDown)) {
-                Effet(true);
-            }
-            if (Input.GetKey(KeyCode.PageUp)) {
-                Effet(false);
-            }
+                // Appui sur page up / page down : donner de l'effet à la boule
+                if (Input.GetKey(KeyCode.PageDown)) {
+                    Effet(true);
+                }
+                if (Input.GetKey(KeyCode.PageUp)) {
+                    Effet(false);
+                }
 
-            // Appui sur flèche haut / flèche bas : incliner le lancer
-            if (Input.GetKey(KeyCode.UpArrow)) {
-                Tourner(true);
-            }
-            if (Input.GetKey(KeyCode.DownArrow)) {
-                Tourner(false);
-            }
+                // Appui sur flèche haut / flèche bas : incliner le lancer
+                if (Input.GetKey(KeyCode.UpArrow)) {
+                    Tourner(true);
+                }
+                if (Input.GetKey(KeyCode.DownArrow)) {
+                    Tourner(false);
+                }
+                break;
+
+            case GameStep.DirectionChosen:
+                // todo : choisir force de lancement
+
+                
+                // Appui sur Espace
+                if (Input.GetKey(KeyCode.Space)) {
+                    Lancer();
+                }    
+                break;
+
+            case GameStep.мячкатится它很漂亮不是吗:
+                var v = GetComponent<Rigidbody>().velocity;
+                // Quand le lancer est terminé (la boule est tombée ou ne bouge presque plus)
+                if (transform.position.y < -15 || (v.x < .1f && v.y < .1f && v.z < .1f)) {
+                    step = GameStep.Done;
+                }
+                break;
+
+            case GameStep.Done:
+                Init();
+                break;
         }
 
         // active le canvas des consignes uniquement quand la boule n'est pas
         // encore lancée
-        canvas.GetComponent<Canvas>().enabled = !мячкатится它很漂亮不是吗;
+        canvas.GetComponent<Canvas>().enabled = step == GameStep.Start;
 
         // Quand on est aux 3/4 de la piste
         if (transform.position.z > 140) {
             quillesCam.SetActive(true);
             mainCam.SetActive(false);
-        }
-
-        var v = GetComponent<Rigidbody>().velocity;
-
-        // Quand le lancer est terminé (la boule est tombée ou ne bouge presque plus)
-        if (transform.position.y < -15 || (v.x < .1f && v.y < .1f && v.z < .1f)) {
-            Init();
         }
     }
 
@@ -109,7 +132,7 @@ public class Boule : MonoBehaviour
         // on réactive la gravité sur la boule une fois qu'elle est lancée
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().AddForce(new Vector3(fw.x * 20000f , 800f, fw.z * 20000f));
-        мячкатится它很漂亮不是吗 = true;
+        step = GameStep.мячкатится它很漂亮不是吗;
     }
 
     // Décale à la fois la boule et la caméra sur l'axe x (sur la largeur de la piste)
@@ -149,7 +172,7 @@ public class Boule : MonoBehaviour
 
     // Met le jeu en place pour un lancer
     void Init() {
-        мячкатится它很漂亮不是吗 = false;
+        step = GameStep.Start;
 
         ResetQuilles();
         ResetBoule();
@@ -193,6 +216,6 @@ public class Boule : MonoBehaviour
     }
 
     bool LaQuilleEstElleDebout() {
-
+        // TODO
     }
 }
