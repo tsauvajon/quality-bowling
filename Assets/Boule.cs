@@ -10,10 +10,10 @@ public class Boule : MonoBehaviour
         public Quaternion rot;
     }
 
+    // Etape en cours du déroulement du jeu
     private enum GameStep
     {
         Start = 0,
-        DirectionChosen = 1,
         мячкатится它很漂亮不是吗 = 2,
         Done = 3
     }
@@ -64,7 +64,12 @@ public class Boule : MonoBehaviour
         // Si la boule n'est pas encore lancée
         switch (step)
         {
-            case GameStep.Start:            
+            case GameStep.Start:
+                // Appui sur Espace
+                if (Input.GetKey(KeyCode.Space)) {
+                    Lancer();
+                }
+
                 // Appui sur > et < : décaler la boule sur la droite ou la gauche
                 if (Input.GetKey(KeyCode.RightArrow)) {
                     Translater(true);
@@ -88,16 +93,6 @@ public class Boule : MonoBehaviour
                 if (Input.GetKey(KeyCode.DownArrow)) {
                     Tourner(false);
                 }
-                break;
-
-            case GameStep.DirectionChosen:
-                // todo : choisir force de lancement
-
-                
-                // Appui sur Espace
-                if (Input.GetKey(KeyCode.Space)) {
-                    Lancer();
-                }    
                 break;
 
             case GameStep.мячкатится它很漂亮不是吗:
@@ -217,5 +212,6 @@ public class Boule : MonoBehaviour
 
     bool LaQuilleEstElleDebout() {
         // TODO
+        return true;
     }
 }
