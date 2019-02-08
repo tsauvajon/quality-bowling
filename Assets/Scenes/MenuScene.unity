@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -486,13 +486,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bonjour le boulingue !
+  m_Text: Vive le bowling !
 --- !u!222 &1750264947
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -729,8 +729,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bouton de fi\xE8vre\nLa fi\xE8vre du samedi soir\nQuelques fois \xE7a me
-    d\xE9\xE7oit"
+  m_Text: "Ce bouton contient beaucoup de texte\nmais sert uniquement \xE0 changer\nde
+    sc\xE8ne pour lancer la partie !"
 --- !u!222 &2000947312
 CanvasRenderer:
   m_ObjectHideFlags: 0
