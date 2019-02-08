@@ -8,6 +8,7 @@ public class Score : MonoBehaviour
     private int count = 0;
 
     public Text scoreText;
+    public GameObject explosion;
 
     void Start () {
         scoreText.enabled = false;
