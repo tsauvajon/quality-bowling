@@ -13,7 +13,7 @@ public class Boule : MonoBehaviour
     }
 
     // Etape en cours du déroulement du jeu
-    private enum GameStep
+    public enum GameStep
     {
         // Départ
         Start = 0,
@@ -39,7 +39,7 @@ public class Boule : MonoBehaviour
     private List<SauvegardePos> initialPositionQuilles = new List<SauvegardePos>();
     private GameObject[] quilles;
 
-    private GameStep step = GameStep.Start;
+    public static GameStep step = GameStep.Start;
 
     void Start()
     {
@@ -110,6 +110,8 @@ public class Boule : MonoBehaviour
                 break;
 
             case GameStep.Done:
+                // détecter les quilles encore debout
+
                 Init();
                 break;
         }
